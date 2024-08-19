@@ -3,6 +3,7 @@ import Table from '@mui/material/Table';
 import Modal from '../components/Modal';
 import Paper from '@mui/material/Paper';
 import { useSelector } from 'react-redux';
+import { Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
@@ -30,22 +31,30 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'productTitle', headerName: 'Product Title', width: 150 },
-  { field: 'description', headerName: 'Description', width: 200 },
-  { field: 'category', headerName: 'Category', width: 100 },
-  { field: 'regularPrice', headerName: 'Regular Price', width: 120 },
-  { field: 'extraPrice', headerName: 'Extra Price', width: 120 },
-  { field: 'taxAmount', headerName: 'Tax Amount', width: 120 },
-  { field: 'totalStock', headerName: 'Total Stock', width: 120 },
-  { field: 'photo', headerName: 'Photo', width: 120 },
-  { field: 'action', headerName: 'Action', width: 120 }
+  { field: 'id', headerName: 'ID'},
+  { field: 'productTitle', headerName: 'Product Title'},
+  { field: 'description', headerName: 'Description'},
+  { field: 'category', headerName: 'Category'},
+  { field: 'regularPrice', headerName: 'Regular Price'},
+  { field: 'extraPrice', headerName: 'Extra Price'},
+  { field: 'taxAmount', headerName: 'Tax Amount'},
+  { field: 'weight', headerName: 'Weight'},
+  { field: 'length', headerName: 'Length'},
+  { field: 'height', headerName: 'Height'},
+  { field: 'width', headerName: 'Width'},
+  { field: 'totalStock', headerName: 'Total Stock'},
+  { field: 'photo', headerName: 'Photo'},
+  { field: 'action', headerName: 'Action'}
 ];
 
 const ProductList = () => {
   const products = useSelector((state) => state.product.products);
  
   return (
+    <Container 
+      maxWidth='lg'      
+      disableGutters 
+    >
     <TableContainer sx={{minHeight: 400, minWidth: '100%'}} component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
@@ -59,14 +68,18 @@ const ProductList = () => {
             {products.map((product, index) => (
               <StyledTableRow key={index}>
                 <StyledTableCell component="th" scope="row">
-                  {product.id + 1}
+                  {product.id}
                 </StyledTableCell>
                 <StyledTableCell align="left">{product.productTitle}</StyledTableCell>
                 <StyledTableCell align="left">{`${product.description.substring(1, 50)}...`}</StyledTableCell>
                 <StyledTableCell align="left">{product.category}</StyledTableCell>
-                <StyledTableCell align="left">{product.regularPrice}</StyledTableCell>
-                <StyledTableCell align="left">{product.extraPrice}</StyledTableCell>
-                <StyledTableCell align="left">{product.taxAmount}</StyledTableCell>
+                <StyledTableCell align="left">{`${product.regularPrice} Tk`}</StyledTableCell>
+                <StyledTableCell align="left">{`${product.extraPrice}Tk`}</StyledTableCell>
+                <StyledTableCell align="left">{`${product.taxAmount}TK`}</StyledTableCell>
+                <StyledTableCell align="left">{`${product.weight}KG`}</StyledTableCell>
+                <StyledTableCell align="left">{`${product.length}CM`}</StyledTableCell>
+                <StyledTableCell align="left">{`${product.height}CM`}</StyledTableCell>
+                <StyledTableCell align="left">{`${product.width}CM`}</StyledTableCell>
                 <StyledTableCell align="left">{product.totalStock}</StyledTableCell>
                 <StyledTableCell align="left">
                   {product.photos.map((file, index) => (
@@ -84,6 +97,7 @@ const ProductList = () => {
           </TableBody>
         </Table>
     </TableContainer>
+    </Container>
   );
 };
 

@@ -71,6 +71,10 @@ const MainForm = () => {
 
   return (
     <>
+      <Container 
+        maxWidth='md'      
+        disableGutters 
+      >
          <Typography 
             variant="h1"
             sx={{ fontSize: '3rem', 
@@ -117,6 +121,7 @@ const MainForm = () => {
           )}
         </Container>
       </div>
+      </Container>
       </>
 
   );

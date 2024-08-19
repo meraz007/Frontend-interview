@@ -107,7 +107,7 @@ export default function TransitionsModal({ product }) {
               <Grid container spacing={2}>
                 <Grid item xs={4}>
                   <Typography variant='body2' sx={{ mt: 2 }}>
-                    Width: { product.width }
+                    Width: { product.width } + 'cm'
                   </Typography>
                 </Grid>
                 <Grid item xs={4}>
