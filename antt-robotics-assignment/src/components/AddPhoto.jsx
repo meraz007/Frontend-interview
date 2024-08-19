@@ -20,29 +20,32 @@ const AddPhoto = ({ formData, setFormData }) => {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    setPreview(files.map(file => URL.createObjectURL(file)));
-    setFormData({ photos: files });
+    const previewUrls = files.map((file) => URL.createObjectURL(file));
+    
+    setPreview(previewUrls);
+
+    const newPhotos = files.map(file => ({
+        name: file.name,
+        preview: URL.createObjectURL(file)
+    }));
+    
+    setFormData(newPhotos);
   };
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-      {/* <Button
-        component="label"
-        role={undefined}
-        variant="contained"
-        tabIndex={-1}
-        startIcon={<CloudUploadIcon />}
-        onChange={handleFileChange}
-      >
-      Upload file
-      <VisuallyHiddenInput type="file" />
-    </Button> */}
-        <input
-          type="file"
-          multiple
+        <Button
+          component="label"
+          role={undefined}
+          variant="contained"
+          tabIndex={-1}
+          startIcon={<CloudUploadIcon />}
           onChange={handleFileChange}
-        />
+        >
+          Upload file
+          <VisuallyHiddenInput type="file" />
+        </Button>
       </Grid>
       <Grid item xs={12}>
         {preview.map((src, index) => (

@@ -1,22 +1,20 @@
-import React, { useState } from 'react';
-import { Button, Stepper, Step, StepLabel } from '@mui/material';
-import ProductDetails from './ProductDetails';
-import InventoryDetails from './InventoryDetails';
-import AddPhoto from './AddPhoto';
 import Review from './Review';
-import { addProduct } from '../features/productSlice';
-import { useDispatch } from 'react-redux';
+import AddPhoto from './AddPhoto';
+import React, { useState } from 'react';
+import ProductDetails from './ProductDetails';
 import { useNavigate } from 'react-router-dom';
+import InventoryDetails from './InventoryDetails';
 import Typography from '@mui/material/Typography';
-import { Container } from '@mui/material';
+import { addProduct } from '../features/productSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Stepper, Step, StepLabel, Container } from '@mui/material';
 
 const steps = ['Product Details', 'Inventory Details', 'Add Photo', 'Review'];
 
 const MainForm = () => {
     const [activeStep, setActiveStep] = useState(0);
-    
     const [formData, setFormData] = useState({
-        id: 0,
+        id: null,
         productTitle: '',
         description: '',
         category: '',
@@ -31,32 +29,30 @@ const MainForm = () => {
         photos: []
     });
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const currentFormCount = useSelector((state) => state.product.products);
 
-  const handleNext = () => setActiveStep(prevStep => prevStep + 1);
-  const handleBack = () => setActiveStep(prevStep => prevStep - 1);
+    const handleNext = () => setActiveStep(prevStep => prevStep + 1);
+    const handleBack = () => setActiveStep(prevStep => prevStep - 1);
 
-  const handleFormDataChange = (newData) => {
-    setFormData({ ...formData, ...newData });
-  };
+    const handleFormDataChange = (newData) => {
+      setFormData({ ...formData, ...newData });
+    };
 
-  const handlePhotoChange = (event) => {
-    const files = Array.from(event.target.files);
-    const fileData = files.map(file => ({
-      name: file.name,
-      preview: URL.createObjectURL(file)
+    const handlePhotoChange = (newPhotos) => {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        photos: [...prevFormData.photos, ...newPhotos]
     }));
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      photos: [...prevFormData.photos, ...fileData]
-    }));
-  };
+    };
 
-  const handleFinish = () => {
-    dispatch(addProduct(formData));
-    navigate('/products');
-  };
+    const handleFinish = () => {
+      const formId = Math.floor(Math.random() * 9999) + 1
+      const finalFormData = { ...formData, id: formId };
+      dispatch(addProduct(finalFormData));
+      navigate('/products');
+    };
 
   const getStepContent = (step) => {
     switch (step) {
@@ -92,7 +88,12 @@ const MainForm = () => {
         >
             {steps.map((label, index) => (
                 <Step key={index}>
-                    <StepLabel>{label}</StepLabel>
+                    <StepLabel sx={{ 
+                      '& .MuiStepLabel-label': { fontSize: '16px' },
+                      '& .MuiStepLabel-iconContainer': { fontSize: '40px' },}}
+                    >
+                        {label}
+                    </StepLabel>
                 </Step>
             ))}
         </Stepper>
@@ -105,7 +106,7 @@ const MainForm = () => {
             </Button>
           )}
           {activeStep < 3 && (
-            <Button variant="contained" color="secondary" onClick={handleNext}>
+            <Button variant="contained"  onClick={handleNext}>
               Next
             </Button>
           )}

@@ -1,5 +1,6 @@
 import React from 'react';
 import Table from '@mui/material/Table';
+import Modal from '../components/Modal';
 import Paper from '@mui/material/Paper';
 import { useSelector } from 'react-redux';
 import { styled } from '@mui/material/styles';
@@ -8,7 +9,6 @@ import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import Modal from '../components/Modal'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -38,12 +38,13 @@ const columns = [
   { field: 'extraPrice', headerName: 'Extra Price', width: 120 },
   { field: 'taxAmount', headerName: 'Tax Amount', width: 120 },
   { field: 'totalStock', headerName: 'Total Stock', width: 120 },
+  { field: 'photo', headerName: 'Photo', width: 120 },
   { field: 'action', headerName: 'Action', width: 120 }
 ];
 
 const ProductList = () => {
   const products = useSelector((state) => state.product.products);
-
+ 
   return (
     <TableContainer sx={{minHeight: 400, minWidth: '100%'}} component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -60,14 +61,24 @@ const ProductList = () => {
                 <StyledTableCell component="th" scope="row">
                   {product.id + 1}
                 </StyledTableCell>
-                <StyledTableCell align="right">{product.productTitle}</StyledTableCell>
-                <StyledTableCell align="right">{product.description}</StyledTableCell>
-                <StyledTableCell align="right">{product.category}</StyledTableCell>
-                <StyledTableCell align="right">{product.regularPrice}</StyledTableCell>
-                <StyledTableCell align="right">{product.extraPrice}</StyledTableCell>
-                <StyledTableCell align="right">{product.taxAmount}</StyledTableCell>
-                <StyledTableCell align="right">{product.totalStock}</StyledTableCell>
-                <StyledTableCell align="right"><Modal /></StyledTableCell>
+                <StyledTableCell align="left">{product.productTitle}</StyledTableCell>
+                <StyledTableCell align="left">{`${product.description.substring(1, 50)}...`}</StyledTableCell>
+                <StyledTableCell align="left">{product.category}</StyledTableCell>
+                <StyledTableCell align="left">{product.regularPrice}</StyledTableCell>
+                <StyledTableCell align="left">{product.extraPrice}</StyledTableCell>
+                <StyledTableCell align="left">{product.taxAmount}</StyledTableCell>
+                <StyledTableCell align="left">{product.totalStock}</StyledTableCell>
+                <StyledTableCell align="left">
+                  {product.photos.map((file, index) => (
+                      <img 
+                          key={index} 
+                          src={file.preview || URL.createObjectURL(file)} 
+                          alt={`Photo ${index}`} 
+                          style={{ width: '50px', height: '50px', margin: '10px' }} 
+                      />
+                  ))}
+                </StyledTableCell>
+                <StyledTableCell align="right"><Modal product={product} /></StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
