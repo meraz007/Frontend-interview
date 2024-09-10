@@ -4,7 +4,12 @@ import React, { useState } from "react";
 
 const Layout = () => {
     const [partitions, setPartitions] = useState([
-        { id: 1, color: getRandomColor(), direction: null, children: [] },
+        { 
+            id: 1, 
+            color: getRandomColor(), 
+            direction: null, 
+            children: [] 
+        },
     ]);
 
     const dividePartition = (partition, id, direction) => {
