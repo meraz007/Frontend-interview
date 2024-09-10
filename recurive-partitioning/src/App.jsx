@@ -7,9 +7,9 @@ function App() {
     <>
       <div className='flex flex-col justify-center'>
           <h1 className='font-bold text-4xl'>Recursive Partitioning</h1>
-          
+
           <div className='mt-12'>
-            <Layout />
+              <Layout />
           </div>
       </div>
     </>

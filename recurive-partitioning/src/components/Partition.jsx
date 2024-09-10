@@ -1,6 +1,6 @@
 import React from "react";
 
-const Partition = ({ partition, onDivide }) => {
+const Partition = ({ partition, onDivide, onRemove }) => {
     return (
         <>
           <div
@@ -28,7 +28,7 @@ const Partition = ({ partition, onDivide }) => {
                   {partition.id > 1 && (
                     <button
                         className="ml-2 bg-gray-700 text-white px-2 py-1 rounded"
-                        onClick={() => onDivide(partition.id, "vertical")}
+                        onClick={() => onRemove(partition.id)}
                   >
                       -
                     </button>

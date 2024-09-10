@@ -1,13 +1,13 @@
-import React, { useState } from "react";
 import Partition from "./Partition";
 import getRandomColor from "../common";
+import React, { useState } from "react";
 
 const Layout = () => {
     const [partitions, setPartitions] = useState([
         { id: 1, color: getRandomColor(), direction: null, children: [] },
     ]);
-    // console.log(partitions)
-    const applyDivide = (partition, id, direction) => {
+
+    const dividePartition = (partition, id, direction) => {
         if (partition.id === id && partition.children.length === 0) {
             // Split the partition into two child partitions
             const child1 = {
@@ -32,7 +32,7 @@ const Layout = () => {
             return {
             ...partition,
             children: partition.children.map((child) =>
-                applyDivide(child, id, direction)
+                dividePartition(child, id, direction)
             ),
             };
         }
@@ -40,25 +40,56 @@ const Layout = () => {
         return partition;
     };
 
+    const removePatitation = (partition, id) => {
+        // If the partition is found, remove it
+        if (partition.id === id) {
+          return null;
+        }
+    
+        // If there are children, we need to filter them out if they match the `id`
+        if (partition.children.length > 0) {
+            const updatedChildren = partition.children
+                .map((child) => removePatitation(child, id))
+                .filter((child) => child !== null); // Remove null children
+        
+            return { ...partition, children: updatedChildren };
+        }
+    
+        return partition;
+    };
+
+    const handleRemove = (id) => {
+        const newPartitions = partitions
+        .map((partition) => removePatitation(partition, id))
+        .filter((partition) => partition !== null); // Remove null partitions
+        setPartitions(newPartitions);
+    };
+
     const handleDivide = (id, direction) => {
         const newPartitions = partitions.map((partition) =>
-            applyDivide(partition, id, direction)
+            dividePartition(partition, id, direction)
         );
+
         setPartitions(newPartitions);
     };
 
     const renderPartition = (partition) => {
         if (partition.children.length === 0) {
             return (
-                <Partition key={partition.id} partition={partition} onDivide={handleDivide} />
+                <Partition 
+                    key={partition.id} 
+                    partition={partition} 
+                    onDivide={handleDivide}
+                    onRemove={handleRemove}
+                />
             );
         } else {
             return (
                 <div
-                key={partition.id}
-                className={`flex ${partition.direction === "horizontal" ? "flex-col" : "flex-row"} w-full h-full`}
+                    key={partition.id}
+                    className={`flex ${partition.direction === "horizontal" ? "flex-col" : "flex-row"} w-full h-full`}
                 >
-                {partition.children.map((child) => renderPartition(child))}
+                    {partition.children.map((child) => renderPartition(child))}
                 </div>
             );
         }
