@@ -4,3 +4,7 @@
   padding: 2rem;
   text-align: center;
 }
+.resizable {
+  border: 1px solid #ccc;
+  position: relative;
+}

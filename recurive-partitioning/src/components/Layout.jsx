@@ -1,6 +1,7 @@
 import Partition from "./Partition";
 import getRandomColor from "../common";
 import React, { useState } from "react";
+import "react-resizable/css/styles.css";
 
 const Layout = () => {
     const [partitions, setPartitions] = useState([
@@ -8,37 +9,37 @@ const Layout = () => {
             id: 1, 
             color: getRandomColor(), 
             direction: null, 
-            children: [] 
+            children: [],
+            size: { width: 912, height: 450 },
         },
     ]);
 
     const dividePartition = (partition, id, direction) => {
         if (partition.id === id && partition.children.length === 0) {
-            // Split the partition into two child partitions
             const child1 = {
                 id: partition.id * 2,
-                color: partition.color, // Retain the old color for the first partition
+                color: partition.color, 
                 direction: null,
                 children: [],
+                size: direction === "vertical" ? { width: partition.size.width / 2, height: partition.size.height } : { width: partition.size.width, height: partition.size.height / 2 }
             };
             const child2 = {
                 id: partition.id * 2 + 1,
-                color: getRandomColor(), // Assign a new random color for the second partition
+                color: getRandomColor(),
                 direction: null,
                 children: [],
+                size: direction === "vertical" ? { width: partition.size.width / 2, height: partition.size.height } : { width: partition.size.width, height: partition.size.height / 2 },
             };
 
-            // Update the partition with the new children and direction
             return { ...partition, direction, children: [child1, child2] };
         }
 
         if (partition.children.length > 0) {
-            // Recursively update the partition's children
             return {
-            ...partition,
-            children: partition.children.map((child) =>
-                dividePartition(child, id, direction)
-            ),
+                ...partition,
+                children: partition.children.map((child) =>
+                    dividePartition(child, id, direction)
+                ),
             };
         }
 
@@ -46,12 +47,10 @@ const Layout = () => {
     };
 
     const removePatitation = (partition, id) => {
-        // If the partition is found, remove it
         if (partition.id === id) {
           return null;
         }
     
-        // If there are children, we need to filter them out if they match the `id`
         if (partition.children.length > 0) {
             const updatedChildren = partition.children
                 .map((child) => removePatitation(child, id))
@@ -66,7 +65,7 @@ const Layout = () => {
     const handleRemove = (id) => {
         const newPartitions = partitions
         .map((partition) => removePatitation(partition, id))
-        .filter((partition) => partition !== null); // Remove null partitions
+        .filter((partition) => partition !== null); 
         setPartitions(newPartitions);
     };
 
@@ -93,6 +92,7 @@ const Layout = () => {
                 <div
                     key={partition.id}
                     className={`flex ${partition.direction === "horizontal" ? "flex-col" : "flex-row"} w-full h-full`}
+                    style={{ width: `${partition.size.width}px`, height: `${partition.size.height}px` }}
                 >
                     {partition.children.map((child) => renderPartition(child))}
                 </div>
