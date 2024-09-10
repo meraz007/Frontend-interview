@@ -4,11 +4,7 @@ import { ResizableBox } from "react-resizable";
 const Partition = ({ partition, onDivide, onRemove }) => {
     return (
         <>
-          <ResizableBox
-              width={partition.size.width}
-              height={partition.size.height}
-              minConstraints={[100, 100]}
-              maxConstraints={[800, 800]}
+          <div
               className="border border-gray-300 h-full w-full flex flex-col justify-center items-center"
               style={{
                   height: "100%",
@@ -39,7 +35,7 @@ const Partition = ({ partition, onDivide, onRemove }) => {
                     </button>
                   )}
               </div>
-          </ResizableBox>
+          </div>
         </>
     )
 }

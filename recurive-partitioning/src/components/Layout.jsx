@@ -10,8 +10,8 @@ const Layout = () => {
             color: getRandomColor(), 
             direction: null, 
             children: [],
-            size: { width: 912, height: 450 },
         },
+
     ]);
 
     const dividePartition = (partition, id, direction) => {
@@ -21,14 +21,12 @@ const Layout = () => {
                 color: partition.color, 
                 direction: null,
                 children: [],
-                size: direction === "vertical" ? { width: partition.size.width / 2, height: partition.size.height } : { width: partition.size.width, height: partition.size.height / 2 }
             };
             const child2 = {
                 id: partition.id * 2 + 1,
                 color: getRandomColor(),
                 direction: null,
                 children: [],
-                size: direction === "vertical" ? { width: partition.size.width / 2, height: partition.size.height } : { width: partition.size.width, height: partition.size.height / 2 },
             };
 
             return { ...partition, direction, children: [child1, child2] };
@@ -92,7 +90,6 @@ const Layout = () => {
                 <div
                     key={partition.id}
                     className={`flex ${partition.direction === "horizontal" ? "flex-col" : "flex-row"} w-full h-full`}
-                    style={{ width: `${partition.size.width}px`, height: `${partition.size.height}px` }}
                 >
                     {partition.children.map((child) => renderPartition(child))}
                 </div>
