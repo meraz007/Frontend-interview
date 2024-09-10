@@ -6,7 +6,7 @@ const Layout = () => {
     const [partitions, setPartitions] = useState([
         { id: 1, color: getRandomColor(), direction: null, children: [] },
     ]);
-
+    // console.log(partitions)
     const applyDivide = (partition, id, direction) => {
         if (partition.id === id && partition.children.length === 0) {
             // Split the partition into two child partitions
