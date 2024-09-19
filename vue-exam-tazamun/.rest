@@ -1,0 +1,2 @@
+GET https://blogs.kingofkey.net/api/documentation
+Content-Type: application/json
